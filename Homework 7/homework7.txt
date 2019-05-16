@@ -1,0 +1,129 @@
+"""
+is_prime function.
+This function was created by Dr. Cheng and was given in class.
+n - Number passed and function would check if n is prime.
+return False if n is not prime.
+return True if n is prime.
+"""
+def is_prime(n):
+    # If n is 1 or under then return false because it is not prime.
+    if n < 2:
+        return False
+    i = 2
+    while i*i <= n:
+        if n%i == 0:
+            return False
+        i += 1
+    return True
+
+
+"""
+Primes function. This function gets all the prime numbers.
+This function was created by Dr. Cheng and was given in class.
+"""
+def primes():
+    yield 2
+    i = 3
+    while True:
+        if is_prime(i):
+            yield i
+        i += 2
+
+
+"""
+sql function. This function gets the squares of all numbers.
+This function was created by Dr. Cheng and was given in class.
+This function squares numbers as long as there are values to be generated.
+"""
+def sql():
+    i = 0
+    while True:
+        yield i*i
+        i += 1
+
+
+"""
+nice function.
+This function was created by Dr. Cheng and was given in class.
+n - Number passed into function.
+returns False
+returns True
+"""
+def nice(n):
+    # A number is nice if it is a sum of a square and a prime.
+    for i in sql():
+        # 0 and 1 are not prime.
+        if i == 0:
+            continue
+        if i == 1:
+            continue
+        if i > n:
+            return False
+        elif is_prime(n - i):
+            return True
+
+
+# This function when called would get all the squares of prime starting from 4.
+def squares_of_primes():
+    # Starting from 4.
+    i = 4
+    while True:
+        # If a prime number was found then yield the square of it and move on.
+        if is_prime(i):
+            yield i*i
+        i += 1
+
+
+# This function when called takes in a number, n, and would generate all SPSP values
+# greater than n.
+def spsp_greater_than_n(n):
+    # If function nice returns true then it is an spsp.
+    i = n + 1
+    while True:
+        if nice(i):
+            yield i
+        i += 1
+
+
+# This function gets a number to find 20 consecutive SPSP numbers right after N * 10.
+def spsp_in_student_id(id_number):
+    find_consecutive = 10 * id_number
+    # If function nice returns true then it is an spsp.
+    i = id_number + 1
+    j = 1
+    while True:
+        if j == 20:
+            break
+        if nice(i):
+            yield i
+        i += 1
+        j += 1
+
+
+# Main function for the program.
+def main():
+    # Question 1:
+    # Generator 1: Yields all squares of primes starting from 4.
+    # Had to use c > 500 to stop it because it will not start.
+    for c in squares_of_primes():
+        if c > 500:
+            break
+        print(c)
+
+    # Question 2:
+    # Generator 2: On an input positive integer n,
+    # yields all SPSP numbers in the increasing order that are greater than n.
+    # Had to use c > 500 to stop it because it will not start.
+    for c in spsp_greater_than_n(6):
+        if c > 500:
+            break
+        print(c)
+
+    # Question 3:
+    # Generator 3: Let N be your student ID number.
+    # Use the generator to find 20 consecutive SPSP numbers right after N * 10.
+    for c in spsp_in_student_id(100):
+        print(c)
+
+
+main()
